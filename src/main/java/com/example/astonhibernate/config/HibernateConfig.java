@@ -5,6 +5,9 @@ import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -19,15 +22,11 @@ import java.util.Properties;
 public class HibernateConfig {
 
     @Bean
-    public SessionFactory sessionFactory() {
-        try {
-            org.hibernate.cfg.Configuration configuration = new org.hibernate.cfg.Configuration();
-            configuration.setProperties(hibernateProperties());
-            configuration.addResource("mappings/User.hbm.xml");
-            return configuration.buildSessionFactory();
-        } catch (Throwable ex) {
-            throw new ExceptionInInitializerError(ex);
-        }
+    public LocalSessionFactoryBean sessionFactory() {
+        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setHibernateProperties(hibernateProperties());
+        sessionFactory.setPackagesToScan("com.example.astonhibernate.entity");
+        return sessionFactory;
     }
 
     @Bean

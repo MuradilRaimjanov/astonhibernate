@@ -6,5 +6,6 @@
         </id>
         <property name="name" column="name" type="string"/>
         <property name="email" column="email" type="string"/>
+        <one-to-one name="car" class="com.example.astonhibernate.entity.Car" cascade="all"/>
     </class>
 </hibernate-mapping>
